@@ -1,0 +1,46 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "web-access-mcp"
+version = "0.1.0"
+description = "Streamable HTTP MCP Server with web access tools and SearXNG search integration"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+    { name = "web-access-mcp" }
+]
+dependencies = [
+    "mcp>=1.18.0",
+    "fastmcp>=0.1.0",
+    "httpx>=0.27.0",
+    "playwright>=1.40.0",
+    "markdownify>=0.11.0",
+    "beautifulsoup4>=4.12.0",
+    "lxml>=5.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.23.0",
+    "pyright>=1.1.0",
+    "pytest-httpx>=0.30.0",
+]
+
+[project.scripts]
+web-access-mcp = "web_access_mcp.server:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["web_access_mcp"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.pyright]
+typeCheckingMode = "standard"
+venvPath = "."
+venv = ".venv"
