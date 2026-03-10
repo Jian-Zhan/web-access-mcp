@@ -2,7 +2,9 @@
 
 from typing import Optional, List
 
-from ..client.searxng import search
+from ..client.searxng import search, image_search as searxng_image_search
+from ..client.searxng import news_search as searxng_news_search
+from ..client.searxng import video_search as searxng_video_search
 
 
 async def web_search(
@@ -34,7 +36,7 @@ async def web_search(
         searxng_url: Optional SearXNG MCP server URL.
 
     Returns:
-        Formatted search results with titles, URLs, and snippets.
+        JSON array of search results: [{"url", "title", "snippet"}]
     """
     return await search(
         query=query,
@@ -43,6 +45,7 @@ async def web_search(
         language=language,
         time_range=time_range,
         searxng_url=searxng_url,
+        return_json=True,
     )
 
 
@@ -67,12 +70,11 @@ async def image_search(
         searxng_url: Optional SearXNG MCP server URL.
 
     Returns:
-        Formatted image search results with URLs, thumbnails, and sources.
+        JSON object: {"results": [{"source_url", "thumbnail_url", "image_url", "title"}]}
     """
-    return await search(
+    return await searxng_image_search(
         query=query,
         max_results=max_results,
-        categories=["images"],
         language=language,
         searxng_url=searxng_url,
     )
@@ -95,12 +97,11 @@ async def news_search(
         searxng_url: Optional SearXNG MCP server URL.
 
     Returns:
-        Formatted news search results with titles, URLs, sources, and dates.
+        JSON array: [{"url", "title", "snippet", "published_date"}]
     """
-    return await search(
+    return await searxng_news_search(
         query=query,
         max_results=max_results,
-        categories=["news"],
         language=language,
         time_range=time_range,
         searxng_url=searxng_url,
@@ -122,12 +123,11 @@ async def video_search(
         searxng_url: Optional SearXNG MCP server URL.
 
     Returns:
-        Formatted video search results with titles, URLs, thumbnails, and durations.
+        JSON array: [{"url", "title", "thumbnail", "duration"}]
     """
-    return await search(
+    return await searxng_video_search(
         query=query,
         max_results=max_results,
-        categories=["videos"],
         language=language,
         searxng_url=searxng_url,
     )
