@@ -8,7 +8,6 @@ from mcp.server.fastmcp import FastMCP
 from .config import Settings
 from .tools.web_fetch import web_fetch
 from .tools.extract_links import extract_links
-from .tools.screenshot import screenshot
 from .tools.extract_metadata import extract_metadata
 from .tools.search import web_search, image_search, news_search, video_search
 
@@ -28,75 +27,45 @@ mcp = FastMCP(
 
 
 @mcp.tool()
-async def web_fetch_tool(url: str, render_js: bool = False) -> str:
+async def web_fetch_tool(url: str) -> str:
     """Fetch a web page and return its content as Markdown.
 
     Args:
         url: The URL to fetch
-        render_js: Whether to render JavaScript using Playwright (default: False)
 
     Returns:
         Markdown-formatted content of the page
     """
-    logger.info(f"web_fetch_tool called: url={url}, render_js={render_js}")
-    return await web_fetch(url=url, render_js=render_js)
+    logger.info(f"web_fetch_tool called: url={url}")
+    return await web_fetch(url=url)
 
 
 @mcp.tool()
-async def extract_links_tool(url: str, render_js: bool = False) -> str:
+async def extract_links_tool(url: str) -> str:
     """Extract all links from a web page.
 
     Args:
         url: The URL to extract links from
-        render_js: Whether to render JavaScript using Playwright (default: False)
 
     Returns:
         JSON string containing list of links with href, text, and title
     """
-    logger.info(f"extract_links_tool called: url={url}, render_js={render_js}")
-    return await extract_links(url=url, render_js=render_js)
+    logger.info(f"extract_links_tool called: url={url}")
+    return await extract_links(url=url)
 
 
 @mcp.tool()
-async def screenshot_tool(
-    url: str,
-    full_page: bool = False,
-    width: int = 1280,
-    height: int = 720,
-) -> str:
-    """Take a screenshot of a web page.
-
-    Args:
-        url: The URL to screenshot
-        full_page: Whether to capture the full page (default: False)
-        width: Viewport width in pixels (default: 1280)
-        height: Viewport height in pixels (default: 720)
-
-    Returns:
-        Base64-encoded PNG image string
-    """
-    logger.info(f"screenshot_tool called: url={url}, full_page={full_page}")
-    return await screenshot(
-        url=url,
-        full_page=full_page,
-        width=width,
-        height=height,
-    )
-
-
-@mcp.tool()
-async def extract_metadata_tool(url: str, render_js: bool = False) -> str:
+async def extract_metadata_tool(url: str) -> str:
     """Extract metadata from a web page.
 
     Args:
         url: The URL to extract metadata from
-        render_js: Whether to render JavaScript using Playwright (default: False)
 
     Returns:
         JSON string containing page metadata (title, description, OG tags, etc.)
     """
-    logger.info(f"extract_metadata_tool called: url={url}, render_js={render_js}")
-    return await extract_metadata(url=url, render_js=render_js)
+    logger.info(f"extract_metadata_tool called: url={url}")
+    return await extract_metadata(url=url)
 
 
 # ============================================================================

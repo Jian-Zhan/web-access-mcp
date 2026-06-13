@@ -58,22 +58,6 @@ class SSLError(WebAccessError):
         self.original_error = original_error
 
 
-class JSError(WebAccessError):
-    """Page requires JavaScript to render content."""
-
-    def __init__(self, url: str, reason: str = ""):
-        message = f"Page requires JavaScript: {url}"
-        if reason:
-            message += f" ({reason})"
-        suggestion = (
-            "This page requires JavaScript to display content. "
-            "Use browser mode (Playwright) instead of HTTP client."
-        )
-        super().__init__(message, suggestion)
-        self.url = url
-        self.reason = reason
-
-
 class NotFoundError(WebAccessError):
     """404 Not Found error."""
 

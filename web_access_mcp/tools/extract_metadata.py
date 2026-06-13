@@ -7,7 +7,6 @@ import httpx
 
 from ..config import Settings
 from ..client.http_client import AsyncHTTPClient
-from ..client.browser import AsyncBrowserClient
 from ..exceptions import (
     WebAccessError,
     NetworkError,
@@ -16,14 +15,12 @@ from ..exceptions import (
 
 async def extract_metadata(
     url: str,
-    render_js: bool = False,
     settings: Optional[Settings] = None,
 ) -> str:
     """Extract metadata from a web page.
 
     Args:
         url: The URL to extract metadata from
-        render_js: Whether to render JavaScript using Playwright
         settings: Optional settings (uses env vars if not provided)
 
     Returns:
@@ -35,12 +32,8 @@ async def extract_metadata(
     settings = settings or Settings.from_env()
 
     try:
-        if render_js:
-            async with AsyncBrowserClient(settings=settings) as browser:
-                html = await browser.fetch(url)
-        else:
-            async with AsyncHTTPClient(settings=settings) as client:
-                html = await client.fetch_html(url)
+        async with AsyncHTTPClient(settings=settings) as client:
+            html = await client.fetch_html(url)
 
         # Parse HTML and extract metadata
         soup = BeautifulSoup(html, "lxml")

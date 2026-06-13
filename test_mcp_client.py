@@ -107,17 +107,9 @@ async def test_tools(client: MCPClient, specific_tool: str | None = None):
     test_cases = {
         "web_fetch_tool": {
             "url": "https://www.python.org",
-            "render_js": True,
         },
         "extract_links_tool": {
             "url": "https://www.python.org",
-            "render_js": False,
-        },
-        "screenshot_tool": {
-            "url": "https://www.python.org",
-            "full_page": False,
-            "width": 1280,
-            "height": 720,
         },
         "extract_metadata_tool": {
             "url": "https://www.python.org",

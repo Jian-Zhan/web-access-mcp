@@ -6,7 +6,6 @@ Streamable HTTP MCP Server providing web access tools and SearXNG search integra
 
 - **web_fetch_tool** - Fetch web pages and convert to Markdown
 - **extract_links_tool** - Extract all links from a web page
-- **screenshot_tool** - Take screenshots of web pages
 - **extract_metadata_tool** - Extract metadata from web pages
 - **web_search_tool** - Search the web using SearXNG
 - **image_search_tool** - Search for images
@@ -299,7 +298,6 @@ python test_mcp_client.py --url http://localhost:4568/web-access-mcp
 
 ```bash
 pip install -e .
-playwright install chromium
 ```
 
 ### Run Locally
