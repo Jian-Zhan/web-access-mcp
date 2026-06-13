@@ -30,7 +30,7 @@ server:
   limiter: false
   public_instance: false
   secret_key: "SEARXNG_SECRET_PLACEHOLDER"
-  image_proxy: false
+  image_proxy: true
   http_protocol_version: "1.1"
   method: "POST"
   default_http_headers:
@@ -64,7 +64,7 @@ limiter:
   enabled: false
 
 outgoing:
-  request_timeout: 3.0
+  request_timeout: 10.0
   useragent_suffix: ""
   pool_connections: 100
   pool_maxsize: 20
@@ -81,3 +81,79 @@ categories_as_tabs:
   science:
   files:
   social media:
+
+engines:
+  # 🔴 Disable icon engines polluting image search
+  - name: devicons
+    disabled: true
+  - name: lucide
+    disabled: true
+  - name: artic
+    disabled: true
+
+  # 🟡 Lower noise engines
+  - name: deviantart
+    weight: 0.3
+
+  # 🟢 Biomedicine core: enable & weight
+  - name: pubmed
+    categories: [general, science]
+    weight: 3
+  - name: semantic scholar
+    categories: [science]
+    weight: 2
+  - name: arxiv
+    categories: [science]
+    weight: 1
+  - name: openalex
+    disabled: false
+    timeout: 5.0
+    weight: 1
+  - name: crossref
+    disabled: false
+    timeout: 30
+    weight: 1
+  - name: public domain image archive
+    disabled: false
+    weight: 1
+
+  # 🟢 Biomedicine specialized: PDBe protein structures
+  - name: pdbe
+    categories: [science, images]
+    weight: 2
+
+  # 🟢 Image search: weight scientific sources
+  - name: wikicommons.images
+    weight: 3
+  - name: flickr
+    weight: 2
+  - name: google images
+    weight: 1.5
+
+  # 🔵 Custom: Europe PMC (biomedical literature, 48M+ articles)
+  - name: europe pmc
+    engine: json_engine
+    shortcut: epmc
+    categories: [science]
+    search_url: https://www.ebi.ac.uk/europepmc/webservices/rest/search?query={query}&format=json&resultType=lite&pageSize=10
+    results_query: resultList/result
+    url_query: id
+    url_prefix: https://europepmc.org/article/MED/
+    title_query: title
+    content_query: authorString
+    timeout: 10.0
+
+  # 🔵 Custom: bioRxiv preprints
+  - name: biorxiv
+    engine: json_engine
+    shortcut: bxv
+    categories: [science]
+    paging: true
+    page_size: 25
+    search_url: https://api.biorxiv.org/search/biorxiv/{query}/0/25
+    results_query: collection
+    url_query: doi
+    url_prefix: https://doi.org/
+    title_query: title
+    content_query: abstract
+    timeout: 10.0
